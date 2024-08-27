@@ -2,6 +2,7 @@ import sys
 import pygame
 
 from settings import Settings
+from ship import Ship
 
 
 class AlienInvasion:
@@ -17,22 +18,31 @@ class AlienInvasion:
         )
         pygame.display.set_caption("Alian Invasion")
 
+        self.ship = Ship(self)
+
         # Задати колір фону.
         self.bg_color = (230, 230, 230)
 
     def run_game(self):
         """Розпочати головний цикл гри."""
         while True:
-            # Слідкувати за подіями миші та клавіарути.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
+            self._check_events()
+            self._update_screen()
 
-                # Наново перемалювати екран на кожній ітерації циклу
-                self.screen.fill(self.settings.bg_color)
+    def _check_events(self):
+        """Слідкувати за подіями миші та клавіарути."""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-                # Показати останній намальований екран.
-                pygame.display.flip()
+    def _update_screen(self):
+        """
+        Наново перемалювати екран на кожній ітерації циклу.
+        Показати останній намальований екран.
+        """
+        self.screen.fill(self.settings.bg_color)
+        self.ship.blitme()
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
