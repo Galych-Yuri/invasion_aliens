@@ -9,14 +9,15 @@ class Ship:
     def __init__(self, ai_game):
         """Ініціалізувати корабель та задати його початкову позицію."""
         self.screen = ai_game.screen
-        self.screen.rect = ai_game.screen.get_rect()
+        self.screen_rect = ai_game.screen.get_rect()
 
         # Download ship image $ take him rect
         self.image = pygame.image.load("images/ship.png")
+        self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
 
         # create any new ship crnter-bottom
-        self.rect.midbottom = self.screen.rect.midbottom
+        self.rect.midbottom = self.screen_rect.midbottom
 
     def blitme(self):
         """Намалювати корабель у його поточному розташуванні."""
