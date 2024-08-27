@@ -2,7 +2,7 @@ import sys
 import pygame
 
 
-class AlianInvasion:
+class AlienInvasion:
     """Загальний клас, що керує ресурсами гри."""
 
     def __init__(self):
@@ -12,6 +12,9 @@ class AlianInvasion:
         self.screen = pygame.display.set_mode((1200, 800))
         pygame.display.set_caption("Alian Invasion")
 
+        # Задати колір фону.
+        self.bg_color = (230, 230, 230)
+
     def run_game(self):
         """Розпочати головний цикл гри."""
         while True:
@@ -20,11 +23,14 @@ class AlianInvasion:
                 if event.type == pygame.QUIT:
                     sys.exit()
 
-            # Показати останній намальований екран.
-            pygame.display.flip()
+                # Наново перемалювати екран на кожній ітерації циклу
+                self.screen.fill(self.settings.bg_color)
+
+                # Показати останній намальований екран.
+                pygame.display.flip()
 
 
 if __name__ == '__main__':
     # Створити екземпляр гри та запустити гру
-    ai = AlianInvasion()
+    ai = AlienInvasion()
     ai.run_game()
