@@ -20,6 +20,17 @@ class Ship:
         # create any new ship crnter-bottom
         self.rect.midbottom = self.screen_rect.midbottom
 
+        # Індикатор руху.
+        self.moving_right = False
+
+    def update(self):
+        """
+        Оновити поточну позицію корабля на
+        основі індикатора руху.
+        """
+        if self.moving_right:
+            self.rect.x += 1
+
     def blitme(self):
         """Намалювати корабель у його поточному розташуванні."""
         self.screen.blit(self.image, self.rect)
