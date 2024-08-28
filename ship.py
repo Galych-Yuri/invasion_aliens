@@ -12,8 +12,9 @@ class Ship:
         self.screen_rect = ai_game.screen.get_rect()
 
         # Download ship image $ take him rect
-        self.image = pygame.image.load("images/ship.png")
-        self.image = pygame.transform.scale(self.image, (100, 100))
+        self.image = pygame.image.load("images/f-16.png")
+        self.image = pygame.transform.scale(self.image, (150, 150))
+        self.image = pygame.transform.rotate(self.image, 270.0)
         self.rect = self.image.get_rect()
 
         # create any new ship crnter-bottom
