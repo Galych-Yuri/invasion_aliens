@@ -33,11 +33,11 @@ class Ship:
         Оновити поточну позицію корабля на
         основі індикатора руху.
         """
-        # Оновити значення x, а не rect.
+        # Оновити значення x корабля, а не rect.
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.rect.x += self.settings.ship_speed
+            self.x += self.settings.ship_speed
         if self.moving_left and self.rect.left > 0:
-            self.rect.x -= self.settings.ship_speed
+            self.x -= self.settings.ship_speed
 
         # Оновити обʼєкт rect з self.x.
         self.rect.x = self.x
