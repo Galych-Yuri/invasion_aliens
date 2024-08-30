@@ -13,9 +13,9 @@ class Ship:
         self.settings = ai_game.settings
 
         # Download ship image $ take him rect
-        self.image = pygame.image.load("images/f-16.png")
-        self.image = pygame.transform.scale(self.image, (150, 150))
-        self.image = pygame.transform.rotate(self.image, 270.0)
+        self.image = pygame.image.load("images/f-16_red.png")
+        # self.image = pygame.transform.scale(self.image, (0, 0))
+        # self.image = pygame.transform.rotate(self.image, 270.0)
         self.rect = self.image.get_rect()
 
         # create any new ship center-bottom
@@ -45,3 +45,8 @@ class Ship:
     def blitme(self):
         """Намалювати корабель у його поточному розташуванні."""
         self.screen.blit(self.image, self.rect)
+
+    def center_ship(self):
+        """Відцентрувати корабель на екрані."""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
