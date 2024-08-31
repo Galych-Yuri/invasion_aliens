@@ -12,8 +12,8 @@ class Button:
 
         # Задати розміри та властивості кнопки.
         self.width, self.height = 200, 50
-        self.button_color = (0, 255, 0)
-        self.text_color = (255, 255, 255)
+        self.button_color = "#F4CE14"
+        self.text_color = "#45474B"
         self.font = pygame.font.SysFont(None, 48)
 
         # Створити обʼєкт кнопки та відцентрувати його

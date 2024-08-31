@@ -4,6 +4,7 @@ import pygame
 
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from ship import Ship
 from bullet import Bullet
@@ -24,8 +25,9 @@ class AlienInvasion:
         pygame.display.set_caption("Alian Invasion")
 
         # Створити екземпляр для збереження ігрової статистики.
+        # та табло на екрані.
         self.stats = GameStats(self)
-
+        self.sb = Scoreboard(self)
         self.ship = Ship(self)
         self.aliens = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
@@ -113,10 +115,14 @@ class AlienInvasion:
     def _check_play_button(self, mouse_pos):
         """Розпочати нову гру, коли користувач натисне кнопку 'Зіграти'."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if self.play_button.rect.collidepoint(mouse_pos):
+        if button_clicked and not self.stats.game_active:
             # Анулювати ігрову статистику.
+            self.settings.initialize_dynamic_settings()
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
+            self.sb.prep_level()
+            self.sb.prep_ships()
 
             # Позбавитися надлишку зомбаків та куль.
             self.aliens.empty()
@@ -127,7 +133,7 @@ class AlienInvasion:
             self.ship.center_ship()
 
             # Hide mouse cursor
-            self.mouse.set_visible(False)
+            pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         """Реагувати на натискання клавіш."""
@@ -171,10 +177,20 @@ class AlienInvasion:
         # Видалити всі кулі та зомбаків, що зіткнулися.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
+        if collisions:
+            for zombie in collisions.values():
+                self.stats.score += self.settings.alien_points * len(zombie)
+            self.sb.prep_score()
+            self.sb.check_high_score()
+
         if not self.aliens:
             # Знищити наявні кулі та створити новий флот зомбаків.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
+            # Збільшити рівень.
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _update_aliens(self):
         """
@@ -194,8 +210,9 @@ class AlienInvasion:
     def _ship_hit(self):
         """Реагувати на зіткення корабля з зомбаком."""
         if self.stats.ships_left > 0:
-            # Зменшити ships_left.
+            # Зменшити ships_left та оновити табло.
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
 
             # Позбавитися надлишку зомбаків та куль.
             self.aliens.empty()
@@ -206,7 +223,7 @@ class AlienInvasion:
             self.ship.center_ship()
 
             # Sleep.
-            sleep(0.5)
+            sleep(1.5)
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
@@ -221,6 +238,9 @@ class AlienInvasion:
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
         self.ship.blitme()
+        # Намалювати інформацію про рахунок.
+        self.sb.show_score()
+
         # Намалювати кнопку "Зіграти" коли гра неактивна.
         if not self.stats.game_active:
             self.play_button.draw_button()

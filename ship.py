@@ -1,13 +1,15 @@
 """class Ship module. Керує майже всією поведінкою корабля"""
 
 import pygame
+from pygame.sprite import Sprite
 
 
-class Ship:
+class Ship(Sprite):
     """class to control Ship in game"""
 
     def __init__(self, ai_game):
         """Ініціалізувати корабель та задати його початкову позицію."""
+        super().__init__()
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
         self.settings = ai_game.settings
@@ -50,3 +52,8 @@ class Ship:
         """Відцентрувати корабель на екрані."""
         self.rect.midbottom = self.screen_rect.midbottom
         self.x = float(self.rect.x)
+
+    def resize_ship(self, scale=(40, 40)):
+        """Змінити розмір корабля для відображення життів."""
+        self.image = pygame.transform.scale(self.image, scale)
+        self.rect = self.image.get_rect()
